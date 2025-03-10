@@ -1,0 +1,76 @@
+services:
+  # Microservice 1
+  microservice1:
+    image: nginx:alpine
+    ports:
+      - "8001:80"
+    volumes:
+      - ./service1/:/usr/share/nginx/html
+      - ./nginx.conf:/etc/nginx/nginx.conf 
+    networks:
+      - net1
+
+  # Microservice 2
+  microservice2:
+    image: nginx:alpine
+    ports:
+      - "8002:80"
+    volumes:
+      - ./service2:/usr/share/nginx/html
+      - ./nginx.conf:/etc/nginx/nginx.conf 
+    networks:
+      - net2
+
+# Microservice 2
+  microservice3:
+    image: nginx:alpine
+    ports:
+      - "8003:80"
+    volumes:
+      - ./service3:/usr/share/nginx/html
+      - ./nginx.conf:/etc/nginx/nginx.conf 
+    networks:
+      - net3
+
+      
+  db1:
+    image: postgres:alpine
+    environment:
+      POSTGRES_USER: user1
+      POSTGRES_PASSWORD: pass1
+      POSTGRES_DB: db1
+    networks:
+      - net1
+
+  db2:
+    image: postgres:alpine
+    environment:
+      POSTGRES_USER: user2
+      POSTGRES_PASSWORD: pass2
+      POSTGRES_DB: db2
+    networks:
+      - net2
+
+  db3:
+    image: postgres:alpine
+    environment:
+      POSTGRES_USER: user3
+      POSTGRES_PASSWORD: pass3
+      POSTGRES_DB: db3
+    networks:
+      - net3
+
+  # Adminer
+  adminer:
+    image: adminer
+    ports:
+      - "8080:8080"
+    networks:
+      - net1
+      - net2
+      - net3
+
+networks:
+  net1:
+  net2:
+  net3:
